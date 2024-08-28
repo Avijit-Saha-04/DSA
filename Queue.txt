@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h> 
+int size=5;
+int arr[5]={10,20,30,40,50};
+int a,b;
+void push()
+{
+    int i;
+printf("Element you wanna push");  
+scanf("%d",&a);
+for(i=1;i<=5;i++)
+{
+    arr[i-1]=arr[i];
+}
+arr[4]=a;
+for(i=0;i<=4;i++)
+{
+    printf("%d ",arr[i]);
+}
+}
+int pop()
+{
+    int i;
+for(i=1;i<=5;i++)
+{
+    arr[i-1]=arr[i];
+}
+for(i=0;i<=4;i++)
+{
+    printf("%d ",arr[i]);
+}
+}
+int main()
+{
+    printf("The array is");
+   for(int i = 0;i<5;i++)
+      printf("%d ", arr[i]);
+    int choice;
+    while (1)
+    {
+        printf("\nPerform operations on the stack:");
+        printf("\n1.EnQueue\n2.DeQueue\n3.Exit");
+        printf("\n\nEnter the choice: ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            push();
+            break;
+        case 2:
+            pop();
+            break;
+        case 3:
+            exit(0);
+        default:
+            printf("\nInvalid choice!!");
+        }
+    }
+}
