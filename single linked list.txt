@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node in the linked list
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to add a node at a specific position in the linked list
+void addNode(struct Node** head_ref, int new_data, int position) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = NULL;
+
+    // If the list is empty or the position is 0, add at the beginning
+    if (position == 0 || *head_ref == NULL) {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+        return;
+    }
+
+    struct Node* temp = *head_ref;
+    for (int i = 0; temp != NULL && i < position - 1; i++) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Position out of bounds, adding at the end.\n");
+    }
+
+    new_node->next = temp->next;
+    temp->next = new_node;
+}
+
+// Function to delete the first occurrence of a given key in the linked list
+void deleteNode(struct Node** head_ref, int key) {
+    struct Node* temp = *head_ref, *prev = NULL;
+
+    // If the head node itself holds the key to be deleted
+    if (temp != NULL && temp->data == key) {
+        *head_ref = temp->next; // Change head
+        free(temp);             // Free old head
+        return;
+    }
+    // Search for the key to be deleted, keep track of the previous node
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+    // If key was not present in linked list
+    if (temp == NULL) {
+        printf("Element not found.\n");
+        return;
+    }
+    // Unlink the node from linked list
+    prev->next = temp->next;
+    free(temp); // Free memory
+}
+// Function to print the linked list
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+// Main function to test the above functions
+int main() {
+    struct Node* head = NULL;
+    int choice, value, position;
+    while (1) {
+        printf("\n1. Add an element\n2. Delete an element\n3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter the value to add: ");
+                scanf("%d", &value);
+                printf("Enter the position to add (0 for beginning): ");
+                scanf("%d", &position);
+                addNode(&head, value, position);
+                    printf("Current list: ");
+                printList(head);
+                break;
+            case 2:
+                printf("Enter the value to delete: ");
+                scanf("%d", &value);
+                deleteNode(&head, value);
+                    printf("Current list: ");
+                printList(head);
+                break;
+            case 3:
+                exit(0);
+            default:
+                printf("Invalid choice, please try again.\n");
+        }
+    }
+
+    return 0;
+}
