@@ -52,7 +52,7 @@ void deleteFront(struct Node** head) {
         printf("List is empty, cannot delete from front.\n");
         return;
     }
-    struct Node* temp = *head;gv
+    struct Node* temp = *head;
     *head = (*head)->next;
     if (*head != NULL) {
         (*head)->prev = NULL;
@@ -72,7 +72,7 @@ void deleteEnd(struct Node** head) {
         *head = NULL;
     } else {
         while (temp->next != NULL) {
-            temp = .temp->next;
+            temp = temp->next;
         }
         temp->prev->next = NULL;
     }
