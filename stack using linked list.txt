@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a stack node
+struct StackNode {
+    int data;
+    struct StackNode* next;
+};
+
+// Define the structure for the stack
+struct Stack {
+    struct StackNode* top;
+};
+
+// Function to create a new stack
+struct Stack* createStack() {
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    stack->top = NULL;
+    return stack;
+}
+
+// Function to check if the stack is empty
+int isEmpty(struct Stack* stack) {
+    return stack->top == NULL;
+}
+
+// Function to push an element onto the stack
+void push(struct Stack* stack, int data) {
+    struct StackNode* newNode = (struct StackNode*)malloc(sizeof(struct StackNode));
+    newNode->data = data;
+    newNode->next = stack->top;
+    stack->top = newNode;
+    printf("Pushed %d onto the stack.\n", data);
+}
+
+// Function to pop an element from the stack
+int pop(struct Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack is empty! Cannot pop.\n");
+        return -1; // Indicate that the stack is empty
+    }
+    struct StackNode* temp = stack->top;
+    int poppedData = temp->data;
+    stack->top = stack->top->next;
+    free(temp);
+    return poppedData;
+}
+
+// Function to peek at the top element of the stack
+int peek(struct Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack is empty! Cannot peek.\n");
+        return -1; // Indicate that the stack is empty
+    }
+    return stack->top->data;
+}
+
+// Function to free the stack
+void freeStack(struct Stack* stack) {
+    while (!isEmpty(stack)) {
+        pop(stack);
+    }
+    free(stack);
+}
+
+// Main function
+int main() {
+    struct Stack* stack = createStack();
+    int choice, value;
+
+    while (1) {
+        printf("\nStack Operations:\n");
+        printf("1. Push\n");
+        printf("2. Pop\n");
+        printf("3. Peek\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter a value to push: ");
+                scanf("%d", &value);
+                push(stack, value);
+                break;
+            case 2:
+                value = pop(stack);
+                if (value != -1) {
+                    printf("Popped %d from the stack.\n", value);
+                }
+                break;
+            case 3:
+                value = peek(stack);
+                if (value != -1) {
+                    printf("Top element is %d\n", value);
+                }
+                break;
+            case 4:
+                freeStack(stack);
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+    return 0;
+}
